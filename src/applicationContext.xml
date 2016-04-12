@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	 http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	 http://www.springframework.org/schema/tx
+	 http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	 http://www.springframework.org/schema/jee
+	 http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+	 http://www.springframework.org/schema/util
+	 http://www.springframework.org/schema/util/spring-util-3.0.xsd
+	 http://www.springframework.org/schema/aop
+	 http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	 http://www.springframework.org/schema/mvc
+	 http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+	 http://www.springframework.org/schema/context
+	 http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	 http://activemq.apache.org/schema/core
+	 http://activemq.apache.org/schema/core/activemq-core.xsd"
+	default-lazy-init="true">
+	<context:annotation-config />
+	<!-- 开启组件扫描 -->
+	<context:component-scan base-package="com.zxjyTools"/>
+
+	<!-- 开启RequestMapping注解 (包含组件映射和方法映射)-->
+	<mvc:annotation-driven/>
+	
+	<!-- 开启注解声明组件(在这里声明并没有作用，貌似被覆盖:已移到applicationContext-mvc.xml) -->
+	<!-- <aop:aspectj-autoproxy proxy-target-class="true"/> -->
+	
+	
+	
+	<!-- 启用注解  ??????? -->
+	<mvc:default-servlet-handler/> 
+	
+	<!-- 配置数据源 -->
+	<util:properties id="jdbcProp" location="classpath:com/zxjyTools/config/jdbc.properties" />
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="username" value="#{jdbcProp.username}" />
+		<property name="password" value="#{jdbcProp.password}" />
+		<property name="url"      value="#{jdbcProp.url}"></property>
+		<property name="driverClassName" value="#{jdbcProp.driver}"></property>
+	</bean>
+	
+	<!-- 配置SqlSessionFactory -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="mapperLocations" value="classpath:com/zxjyTools/entity/mapper/*.xml"/>	
+	</bean>
+	
+	<!-- 配置Mybatis注解 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.zxjyTools.dao"/>
+		<property name="annotationClass" value="com.zxjyTools.annotation.MyBatisRepository"></property>
+	</bean>
+	
+	<!-- 处理请求转发 -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	
+	<!-- 用注解声明、配置aop -->
+	<!-- 开启注解声明组件 -->
+	<!-- aop组件的声明在ApplicationContext-mvc.xml文件中才会工作 -->
+	<!-- <aop:aspectj-autoproxy proxy-target-class="true"/> -->
+	<!-- 声明aop组件 -->
+	<!-- <bean id="operateLogger" class="com.zxjyTools.aspect.OperateLogger"/>
+	<bean id="logger2" class="com.zxjyTools.aspect.Logger2"/>
+	<bean id="exceptionLogger" class="com.zxjyTools.aspect.ExceptionLogger"/> -->
+	
+	<!-- 配置aop组件 -->
+	<!-- <aop:config>
+	
+		
+		
+		<aop:aspect ref="logger2">
+			环绕通知
+			<aop:around method="log" pointcut="within(com.zxjyTools.controller..*)"/>
+		</aop:aspect>
+		
+		
+		
+		<aop:aspect ref="operateLogger">
+			最终通知(相当于finally)
+			<aop:after method="log" pointcut="within(com.zxjyTools.controller..*)"/>
+			后置通知
+			<aop:after-returning method="log" pointcut="within(com.zxjyTools.controller..*)"/>
+			前置通知
+			<aop:before method="log" pointcut="within(com.zxjyTools.controller..*)"/>
+		</aop:aspect>
+		
+		异常切面
+		<aop:aspect ref="exceptionLogger">
+			<aop:after-throwing method="log" throwing="e" pointcut="within(com.zxjyTools.controller..*)"/>
+		</aop:aspect>
+		
+	</aop:config> -->
+	
+	<!-- 声明事务管理组件 -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+<!-- 1.注解式声明事务  -->
+	<!-- 开启事务注解扫描 -->
+	<!-- <tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/> -->
+	
+<!-- 2.XML式声明事务  -->
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="find*" read-only="true" propagation="REQUIRED"/>
+			<tx:method name="update*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+			<tx:method name="save*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+			<tx:method name="add*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+			<tx:method name="delete*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+		</tx:attributes>
+	</tx:advice>	
+	<aop:config proxy-target-class="true">
+		<aop:advisor advice-ref="txAdvice" pointcut="within(com.zxjyTools.controller..*)"/>
+	</aop:config>
+	
+</beans>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-ibatis.apache.org//DTD Mapper 3.0//EN"
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.zxjyTools.dao.BugDao">
+	
+	<!-- 查询全部用户信息 -->	
+	<select id="findAll" resultType="com.zxjyTools.entity.Bug">
+		select * from t_bug
+	</select>
+	
+	<select id="selectBug"  resultType="com.zxjyTools.entity.Bug"
+		parameterType="Long">
+		select * from t_bug where id = #{id}
+	</select>
+	
+	<insert id="insertBug" parameterType="com.zxjyTools.entity.Bug"
+	 	keyProperty="bugId" useGeneratedKeys="true">
+		insert into t_bug (
+			DESCRIPTION,
+			TYPE,
+			STATUS,
+			SUBMITTER,
+			SOLVER
+		) values (
+			#{description},
+			#{type},
+			#{status},
+			#{submitter},
+			#{solver}
+		)
+	</insert>
+	
+	<update id="updateBug" parameterType="com.zxjyTools.entity.Bug" >
+		update t_bug
+		<set>
+			DESCRIPTION = #{description},
+			TYPE = #{type},
+			STATUS = #{status},
+			SUBMITTER = #{submitter},
+			SOLVER = #{solver}
+		</set>
+	</update>
+	
+	<delete id="deleteBug" parameterType="Long">
+		delete from t_bug where id = #{id}
+	</delete>
+	
+</mapper>
