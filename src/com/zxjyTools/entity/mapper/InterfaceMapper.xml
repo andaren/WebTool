@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-ibatis.apache.org//DTD Mapper 3.0//EN"
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.zxjyTools.dao.InterfaceDao">
+	
+	<!-- 查询全部用户信息 -->	
+	<select id="findAll" resultType="com.zxjyTools.entity.Interface">
+		select * from t_interface
+	</select>
+	
+	<insert id="insertInterface" parameterType="com.zxjyTools.entity.Interface"
+		keyProperty="interfaceId" useGeneratedKeys="true">
+		insert into t_interface (
+			CATEGORYID,
+			NAME,
+			ARGS,
+			PATH,
+			SUBMITTER
+		) values (
+			#{categoryId},
+			#{name},
+			#{args},
+			#{path},
+			#{submitter}
+		)
+	</insert>
+	
+	<select id="findInterface" parameterType="Integer" resultType="com.zxjyTools.entity.Interface">
+		select * from t_Inteface
+		where		
+		ID = #{id}
+
+	</select>
+	
+	<update id="updateInterface" parameterType="com.zxjyTools.entity.Interface">
+		update t_interface 
+		<set>
+			CATEGORYID = #{categoryId},
+			NAME = #{name},
+			ARGS = #{args},
+			PATH = #{path},
+			SUBMITTER = #{submitter}
+		</set>		
+	</update>
+	
+	<delete id="deleteInterface" parameterType="Integer">
+		delete form t_interface where ID = #{id}
+	</delete>
+	
+</mapper>

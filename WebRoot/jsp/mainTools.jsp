@@ -31,5 +31,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	</c:if>
   	
     <div style="margin-left: 20%;margin-top: 5%"><a href="<%= basePath%>jsp/tool/changed.jsp"><img src="${base }image/changeSql.png" title="SQL替换"></a></div>
+  	<div><a href="<%= basePath%>jsp/interface/interfaceCategory.jsp">接口管理</a></div>
+  
   </body>
 </html>

@@ -21,7 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
 	<script type="text/javascript">
 	window.onload= function () {
-		setTimeout("document.getElementById('msg').remove();", 2000);
+		setTimeout("document.getElementById('msg').remove();", 1000);
 	};
 		function submitForm() {
 			var username = document.getElementById("username").value;

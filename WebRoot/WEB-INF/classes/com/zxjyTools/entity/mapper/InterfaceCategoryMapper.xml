@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-ibatis.apache.org//DTD Mapper 3.0//EN"
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.zxjyTools.dao.InterfaceCategoryDao">
+	
+	<!-- 查询全部用户信息 -->	
+	<select id="findAll" resultType="com.zxjyTools.entity.InterfaceCategory">
+		select * from t_interface_category
+	</select>
+	
+	<select id="selectInterfaceCategory"  resultType="com.zxjyTools.entity.InterfaceCategory"
+		parameterType="Integer">
+		select * from t_interface_category where id = #{id}
+	</select>
+	
+	<insert id="insertInterfaceCategory" parameterType="com.zxjyTools.entity.InterfaceCategory"
+	 	keyProperty="interfaceCategoryId" useGeneratedKeys="true">
+		insert into t_interface_category (
+			PARENTID,
+			ACTIONNAME,
+			TYPE
+		) values (
+			#{parentId},
+			#{ActionName},
+			#{type}
+		)
+	</insert>
+	
+	<update id="updateInterfaceCategory" parameterType="com.zxjyTools.entity.InterfaceCategory" >
+		update t_interface_category
+		<set>
+			PARENTID = #{parentId},
+			ACTIONNAME = #{ACTIONNAME},
+			TYPE = #{TYPE}
+		</set>
+	</update>
+	
+	<delete id="deleteInterfaceCategory" parameterType="Integer">
+		delete from t_interface_category where id = #{id}
+	</delete>
+	
+</mapper>

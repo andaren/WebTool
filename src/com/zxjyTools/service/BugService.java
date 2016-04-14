@@ -1,5 +1,5 @@
 package com.zxjyTools.service;
 
-public interface BugService {
+public interface BugService extends BaseService {
 
 }
