@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.zxjyTools.dao.InterfaceDao;
 import com.zxjyTools.entity.Interface;
 import com.zxjyTools.service.InterfaceService;
+import com.zxjyTools.vo.InterfaceVo;
 
 @Service("interfaceService")
 public class InterfaceServiceImpl implements InterfaceService{
@@ -33,5 +34,9 @@ public class InterfaceServiceImpl implements InterfaceService{
 
 	public List<?> findAll() {
 		return interfaceDao.findAll();
+	}
+
+	public List<InterfaceVo> findAllInterfaceInfo() {		
+		return interfaceDao.selectAllInterfaceInfo();
 	}
 }

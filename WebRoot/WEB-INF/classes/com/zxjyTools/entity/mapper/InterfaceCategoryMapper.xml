@@ -22,7 +22,7 @@
 			TYPE
 		) values (
 			#{parentId},
-			#{ActionName},
+			#{actionName},
 			#{type}
 		)
 	</insert>
@@ -31,8 +31,8 @@
 		update t_interface_category
 		<set>
 			PARENTID = #{parentId},
-			ACTIONNAME = #{ACTIONNAME},
-			TYPE = #{TYPE}
+			ACTIONNAME = #{actionName},
+			TYPE = #{type}
 		</set>
 	</update>
 	

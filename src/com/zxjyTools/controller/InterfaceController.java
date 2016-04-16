@@ -1,6 +1,9 @@
 package com.zxjyTools.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +16,7 @@ import com.zxjyTools.entity.Interface;
 import com.zxjyTools.entity.InterfaceCategory;
 import com.zxjyTools.service.InterfaceService;
 import com.zxjyTools.service.serviceImpl.InterfaceCategoryService;
+import com.zxjyTools.vo.InterfaceVo;
 
 /**
  * 手机端接口工具类
@@ -20,7 +24,7 @@ import com.zxjyTools.service.serviceImpl.InterfaceCategoryService;
  *
  */
 @Controller
-@RequestMapping("/interface")
+@RequestMapping("interface")
 public class InterfaceController {
 
 	@Resource
@@ -36,19 +40,20 @@ public class InterfaceController {
 	//接口类型管理----------------------------------------
 	@RequestMapping("/allCategory.do")
 	public String getAllInterfaceCategory(Model model) {
+		@SuppressWarnings("unchecked")
 		List<InterfaceCategory> list = (List<InterfaceCategory>) interfaceCategoryService.findAll();
-		model.addAttribute("InterfacecategoryList", list);
-		return "";
+		model.addAttribute("interfacecategoryList", list);
+		return "interface/interfaceCategory";
 	}
 	
 	@RequestMapping("/addCategory.do")
-	public String addInterfaceCategory(HttpServletRequest req) {
+	public void addInterfaceCategory(HttpServletRequest req) {
 		//---
 		String parentId = req.getParameter("parentId");
 		if (parentId == null && "".equals(parentId)) {
 			parentId = "0";
 		}
-		String actionName = req.getParameter("ActionName");
+		String actionName = req.getParameter("actionName");
 		String type = req.getParameter("type");
 		//---
 		InterfaceCategory interCategory = new InterfaceCategory();
@@ -57,12 +62,13 @@ public class InterfaceController {
 		interCategory.setType(type);
 		//组装实体最好是放在service层内部...
 		interfaceCategoryService.add(interCategory);
-		return null;
+		//return //"interface/interfaceCategory";
 	}
 	
 	@RequestMapping("/deleteCategory.do")
-	public String deleteInterfaceCategory() {
-		return null;
+	public void deleteInterfaceCategory(HttpServletRequest req) {
+		String categoryId = req.getParameter("categoryId");
+		interfaceCategoryService.delete(Integer.valueOf(categoryId));
 	}
 	
 	@RequestMapping("/updateCategory.do")
@@ -71,11 +77,37 @@ public class InterfaceController {
 	}
 	
 	//接口管理-----------------------------------------------
+	@RequestMapping("/addInfos")
+	public String addInterfaceInfos(Model model) {
+		//查询接口类型
+		List<Map<String, String>> categoryList = new ArrayList<Map<String, String>>();
+		@SuppressWarnings("unchecked")
+		List<InterfaceCategory> list = (List<InterfaceCategory>) interfaceCategoryService.findAll();
+		if (list != null && list.size() > 0) {
+			for (InterfaceCategory category : list) {
+				//首先默认页面上全部属性不为空...
+				Map<String, String> newMap = new HashMap<String, String>();
+				newMap.put("id", category.getId() + "");
+				newMap.put("actionName", category.getActionName());
+				newMap.put("type", category.getType());
+				categoryList.add(newMap);
+			}
+		}
+		model.addAttribute("categoryList", categoryList);
+		return "interface/addInterface";
+	}
+	
 	@RequestMapping("/allInterface.do")
 	public String getAllInterface(Model model) {
-		List<Interface> list = (List<Interface>) interfaceService.findAll();
-		model.addAttribute("inferfaceList", list);
-		return "";
+		//查询所有接口信息
+		List<InterfaceVo> interfaceList = (List<InterfaceVo>) interfaceService.findAllInterfaceInfo();
+		for (InterfaceVo inter : interfaceList) {
+			String args = inter.getInterfaceArgs();
+			args = args.replace(",", "\n");
+			inter.setInterfaceArgs(args);
+		}
+		model.addAttribute("inferfaceList", interfaceList);
+		return "interface/interface";
 	}
 	
 	@RequestMapping("/save.do")
@@ -86,6 +118,7 @@ public class InterfaceController {
 		String args = req.getParameter("args");
 		String path = req.getParameter("path");
 		String submitter = req.getParameter("submitter");
+		String description = req.getParameter("description");
 		//---
 		Interface inter = new Interface();
 		inter.setArgs(args);
@@ -93,6 +126,7 @@ public class InterfaceController {
 		inter.setName(name);
 		inter.setPath(path);
 		inter.setSubmitter(Integer.valueOf(submitter));
+		inter.setDescription(description);
 		int interfaceId = interfaceService.add(inter);
 	}
 	

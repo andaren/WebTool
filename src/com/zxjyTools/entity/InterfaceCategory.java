@@ -1,16 +1,20 @@
 package com.zxjyTools.entity;
 
+import java.io.Serializable;
+
 /**
  * 接口类型类
  * @author Administrator
  *
  */
-public class InterfaceCategory {
+public class InterfaceCategory implements Serializable{
 
+	private static final long serialVersionUID = 1L;
+	
 	private Integer id;
 	private Integer parentId;
 	private String type;
-	private String ActionName;
+	private String actionName;
 	private int flag;
 	
 	public InterfaceCategory() {
@@ -43,11 +47,11 @@ public class InterfaceCategory {
 	}
 
 	public String getActionName() {
-		return ActionName;
+		return actionName;
 	}
 
 	public void setActionName(String actionName) {
-		ActionName = actionName;
+		this.actionName = actionName;
 	}
 
 	public int getFlag() {

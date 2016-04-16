@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>工具集页面</title>
+    <title>用户信息</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -24,14 +24,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-  	<c:if test="${not empty user }">
-  		<div>
-  			<span> 用户：${user.username}!</span>
-  		</div>
-  	</c:if>
-  	
-    <div style="margin-left: 20%;margin-top: 5%"><a href="<%= basePath%>jsp/tool/changed.jsp"><img src="${base }image/changeSql.png" title="SQL替换"></a></div>
-  	<div><a href="<%= basePath%>interface/allCategory.do">接口类型管理</a></div>
- 	<div><a href="<%= basePath%>interface/allInterface.do">接口管理</a></div>
+	<table cellpadding="30%" align="center" border="2px" cellspacing="10%">
+		<tr>
+			<th>用户名</th><th>密码</th>
+		</tr>
+		<c:if test="${not empty userList}">
+			<c:forEach items="${userList}" var="user" varStatus="status">
+				<tr height="40px">
+					<td>${user.username}</td>
+					<td>${user.password}</td>
+				</tr>
+			</c:forEach>
+		</c:if>
+	</table>
   </body>
 </html>

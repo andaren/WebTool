@@ -4,9 +4,12 @@ import java.util.List;
 
 import com.zxjyTools.annotation.MyBatisRepository;
 import com.zxjyTools.entity.Interface;
+import com.zxjyTools.vo.InterfaceVo;
 
 @MyBatisRepository
 public interface InterfaceDao {
+	
+	List<InterfaceVo> selectAllInterfaceInfo();
 	
 	List<Interface> findAll();
 	

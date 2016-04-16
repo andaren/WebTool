@@ -27,47 +27,78 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		window.open('${base }jsp/interface/addInterfaceCategory.jsp?categoryId='+categoryId+'&t='+new Date().getTime(),'添加接口类型页面', 'height=400, width=900, top=400, left=100, toolbar=no, menubar=no, scrollbars=no, resizable=yes, location=no, status=no');
 	}
 
-	function addChild2(categoryId) {
-		var xmlhttp;
+	function deleteCategory(categoryId) {
+		var xmlHttp;
 		if (window.XMLHttpRequest) {
 			xmlHttp = new XMLHttpRequest();
 		} else {
-			xmlHttp = new ActiveXObject("Microsoft.XMLhttp");
+			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlHttp.onreadystatechange = function() {
+			if (2 == xmlHttp.readyState) {//2：请求已发送   但是并没有检查回应、页面是否正常返回（设置200&4 则失效）
+			 	window.location = location;
+			}
+		};
+		xmlHttp.open("get", "${base }interface/deleteCategory.do?categoryId="+categoryId+"&t="+new Date().getTime(), true);
+		xmlHttp.send();
+	}
+	function addChild2(categoryId) {
+		var xmlHttp;
+		if (window.XMLHttpRequest) {
+			xmlHttp = new XMLHttpRequest();
+		} else {
+			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
 		}
 		xmlHttp.onreadystatechange = function() {
 			if (xmlHttp.status == 200 && xmlHttp.readyState == 4) {
 				alert("XMLHTTP请求发送成功！");
 			}
 		};
-		xmlHttp.open("post", "${base }tool/changeSql.do", true);
+		xmlHttp.open("post", "${base }interface/allCategory.do", true);
 		xmlHttp.send();
 	}
 </script>
   </head>
   
   <body>
-	<table cellpadding="30%" align="center" border="2px" cellspacing="10%">
-		<tr>
-			<th>接口类型</th>
+  	<fieldset style="margin-left: auto; margin-top: auto;">
+  		<legend>接口类型</legend>
+  		<table cellpadding="20%" border="1px" cellspacing="0px">
+		<tr bgcolor="lightgreen" align="center">
+			<td>Action名称</td>
+			<td>接口类型</td>
+			<td>操作</td>
 		</tr>
-		<c:if test="${not empty InterfacecategoryList}">
-			<c:forEach items="${InterfacecategoryList}" var="interCategory" varStatus="status">
+		<c:if test="${not empty interfacecategoryList}">
+			<c:forEach items="${interfacecategoryList}" var="interCategory" varStatus="status">
 				<tr height="40px">
 					<td>
 						<input id="interfaceCategoryId" type="hidden" value="${interCategory.id}"/>
 						<input id="parentId" type="hidden" value="${interCategory.parentId}"/>
-						${interCategory.ActionName}
+						${interCategory.actionName}
 					</td>
-					<td>${interCategory.type}</td>
-					<td><input type="button" value="在其下添加子类型" onclick="addChild(${interCategory.id})"/></td>
+					<td>					
+						<c:choose>
+							<c:when test="${interCategory.type == 1}">
+								家长端
+							</c:when>
+							<c:when test="${interCategory.type == 0}">
+								老师端
+							</c:when>
+						</c:choose>							
+					</td>
+					<td>
+						<input type="button" value="在其下添加子类型" onclick="addChild(${interCategory.id});"/>
+						<input type="button" value="删除" onclick="deleteCategory(${interCategory.id});"/>
+					</td>
 				</tr>
 			</c:forEach>
-		</c:if>
-		<tr>
-			<td>
-				<input id="add" type="button" value="添加父接口类型" onclick="addChild(0);"/>
-			</td>
-		</tr>
+		</c:if>		
 	</table>
+  	<div>
+  		<input id="add" type="button" value="添加父接口类型" onclick="addChild(0);" style="margin-top: 20px;"/>
+  	</div>
+  	</fieldset>
+	
   </body>
 </html>

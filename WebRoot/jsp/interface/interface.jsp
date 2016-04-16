@@ -20,22 +20,102 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
+<script type="text/javascript">
 
+	function addInterface() {
+		window.open('${base }interface/addInfos.do?t='+new Date().getTime(),'添加接口页面', 'height=600, width=900, top=400, left=100, toolbar=no, menubar=no, scrollbars=no, resizable=yes, location=no, status=no');
+	}
+
+	function deleteInterface(interfaceId) {
+		var xmlHttp;
+		if (window.XMLHttpRequest) {
+			xmlHttp = new XMLHttpRequest();
+		} else {
+			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlHttp.onreadystatechange = function() {
+			if (2 == xmlHttp.readyState) {//2：请求已发送   但是并没有检查回应、页面是否正常返回（设置200&4 则失效）
+			 	window.location = location;
+			}
+		};
+		xmlHttp.open("POST", "${base }interface/delete.do?interfaceId="+interfaceId+"&t="+new Date().getTime(), true);
+		xmlHttp.send();
+	}
+	function addChild2(categoryId) {
+		var xmlHttp;
+		if (window.XMLHttpRequest) {
+			xmlHttp = new XMLHttpRequest();
+		} else {
+			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlHttp.onreadystatechange = function() {
+			if (xmlHttp.status == 200 && xmlHttp.readyState == 4) {
+				alert("XMLHTTP请求发送成功！");
+			}
+		};
+		xmlHttp.open("post", "${base }interface/allCategory.do", true);
+		xmlHttp.send();
+	}
+</script>
   </head>
   
   <body>
-	<table cellpadding="30%" align="center" border="2px" cellspacing="10%">
-		<tr>
-			<th>用户名</th><th>密码</th>
+  	<fieldset style="margin-left: auto; margin-top: auto;">
+  		<legend>接口一览</legend>
+  		<table cellpadding="20%" border="1px" cellspacing="0px">
+		<tr bgcolor="lightgreen" align="center">
+			<td>接口名</td>
+			<td>接口Action</td>
+			<td>接口类型</td>
+			<td>接口描述</td>			
+			<td>请求路径</td>
+			<td>请求参数</td>
+			<td>提交人</td>
+			<td>操作</td>
 		</tr>
-		<c:if test="${not empty userList}">
-			<c:forEach items="${userList}" var="user" varStatus="status">
+		<c:if test="${not empty inferfaceList}">
+			<c:forEach items="${inferfaceList}" var="inter" varStatus="status">
 				<tr height="40px">
-					<td>${user.username}</td>
-					<td>${user.password}</td>
+					<td>
+						<input id="interfaceCategoryId" type="hidden" value="${inter.interfaceId}"/>
+						${inter.interfaceName}
+					</td>
+					<td>
+						${inter.actionName}
+					</td>
+					<td>					
+						<c:choose>
+							<c:when test="${inter.interfaceType == 1}">
+								家长端
+							</c:when>
+							<c:when test="${inter.interfaceType == 0}">
+								老师端
+							</c:when>
+						</c:choose>							
+					</td>
+					<td>
+						${inter.description}
+					</td>
+					<td>
+						${inter.interfacePath}
+					</td>
+					<td>
+						${inter.interfaceArgs}
+					</td>
+					<td>
+						${inter.submitter}
+					</td>
+					<td>
+						<input type="button" value="删除" onclick="deleteInterface(${inter.interfaceId});"/>
+					</td>
 				</tr>
 			</c:forEach>
-		</c:if>
+		</c:if>		
 	</table>
+  	<div>
+  		<input id="addInter" type="button" value="提交一个新接口" onclick="addInterface();" style="margin-top: 20px;"/>  	
+  	</div>
+  	</fieldset>
+	
   </body>
 </html>

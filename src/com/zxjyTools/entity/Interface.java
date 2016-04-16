@@ -14,6 +14,7 @@ public class Interface {
 	private String path;
 	private Integer flag;
 	private Integer submitter;
+	private String description;
 	
 	public Interface() {
 		
@@ -75,6 +76,13 @@ public class Interface {
 	public void setSubmitter(Integer submitter) {
 		this.submitter = submitter;
 	}
-	
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	
 }

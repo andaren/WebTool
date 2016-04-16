@@ -3,6 +3,36 @@
 	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 
 <mapper namespace="com.zxjyTools.dao.InterfaceDao">
+
+	<resultMap type="com.zxjyTools.vo.InterfaceVo" id="interfaceInfoMap">
+		<result column="id" property="interfaceId"/>
+		<result column="type" property="interfaceType"/>
+		<result column="description" property="description"/>
+		<result column="actionName" property="actionName"/>
+		<result column="name" property="interfaceName"/>
+		<result column="args" property="interfaceArgs"/>
+		<result column="path" property="interfacePath"/>
+		<result column="username" property="submitter"/>
+	</resultMap>
+	
+	<select id="selectAllInterfaceInfo" resultMap="interfaceInfoMap">	
+		SELECT
+		  tf.id AS interfaceId,
+		  tfc.`type` AS interfaceType,
+		  tf.`description` AS description,
+		  tfc.`actionName` AS actionName,
+		  tf.`name` AS interfaceName,
+		  tf.`args` AS interfaceArgs,
+		  tf.`path` AS interfacePath,
+		  tu.`username` AS submitter
+		FROM
+		  t_interface tf 
+		  JOIN t_interface_category tfc 
+		    ON tfc.id = tf.`categoryId` 
+		  JOIN t_user tu 
+		    ON tu.`id` = tf.`submitter` 
+		  ORDER BY tf.id DESC
+	</select>
 	
 	<!-- 查询全部用户信息 -->	
 	<select id="findAll" resultType="com.zxjyTools.entity.Interface">
@@ -16,13 +46,15 @@
 			NAME,
 			ARGS,
 			PATH,
-			SUBMITTER
+			SUBMITTER,
+			DESCRIPTION
 		) values (
 			#{categoryId},
 			#{name},
 			#{args},
 			#{path},
-			#{submitter}
+			#{submitter},
+			#{description}
 		)
 	</insert>
 	
@@ -40,7 +72,8 @@
 			NAME = #{name},
 			ARGS = #{args},
 			PATH = #{path},
-			SUBMITTER = #{submitter}
+			SUBMITTER = #{submitter},
+			DESCRIPTION = #{description}
 		</set>		
 	</update>
 	
