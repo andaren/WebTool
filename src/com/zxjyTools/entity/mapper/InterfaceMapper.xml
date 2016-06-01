@@ -59,7 +59,7 @@
 	</insert>
 	
 	<select id="findInterface" parameterType="Integer" resultType="com.zxjyTools.entity.Interface">
-		select * from t_Inteface
+		select * from t_Interface
 		where		
 		ID = #{id}
 
@@ -78,7 +78,7 @@
 	</update>
 	
 	<delete id="deleteInterface" parameterType="Integer">
-		delete form t_interface where ID = #{id}
+		delete from t_interface where ID = #{id}
 	</delete>
 	
 </mapper>

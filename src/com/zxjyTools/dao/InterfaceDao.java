@@ -13,7 +13,7 @@ public interface InterfaceDao {
 	
 	List<Interface> findAll();
 	
-	InterfaceDao selectInterface(Integer id);
+	Interface findInterface(Integer id);
 	
 	void deleteInterface(Integer id);
 	

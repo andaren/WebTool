@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-ibatis.apache.org//DTD Mapper 3.0//EN"
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.zxjyTools.dao.TeacherAttDao">
+	
+	<!-- 查询全部考勤时间段信息 -->	
+	<select id="findAllSchedualTime" resultType="com.zxjyTools.entity.TimeSchedual">
+		select * from t_checking_teacher_daily
+		where schoolId = #{schoolId} 
+		and usingFlag = '1'
+	</select>
+	
+	<!-- 保存考勤时间段信息 -->	
+	<insert id="saveTeacherAtt" parameterType="com.zxjyTools.entity.TeacherAtt"
+	 	keyProperty="id" useGeneratedKeys="true">
+		insert into t_check_teacher (
+			CHECKID,
+			USERNAME,
+			TEACHERID,
+			CHECKNAME,
+			CHECKTIME,
+			STATUS,
+			SCHOOLID,
+			ISREADER
+		) values (
+			#{checkId},
+			#{username},
+			#{teacherId},
+			#{checkName},
+			#{checkTime},
+			#{status},
+			#{schoolId},
+			#{isReader}
+		)
+	</insert>
+	
+</mapper>

@@ -24,8 +24,8 @@ public class InterfaceServiceImpl implements InterfaceService{
 		interfaceDao.updateInterface((Interface)obj);		
 	}
 
-	public Object select(Integer id) {
-		return (Interface)interfaceDao.selectInterface(id);
+	public Interface select(Integer id) {
+		return interfaceDao.findInterface(id);
 	}
 
 	public void delete(Integer id) {

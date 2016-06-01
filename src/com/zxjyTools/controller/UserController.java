@@ -5,12 +5,11 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.zxjyTools.dao.UserDao;
 import com.zxjyTools.entity.User;
+import com.zxjyTools.service.UserService;
 
 @Controller
 @RequestMapping("/user")
@@ -18,11 +17,12 @@ import com.zxjyTools.entity.User;
 public class UserController {
 	
 	@Resource
-	private UserDao userDao;
+	private UserService userService;
 
 	@RequestMapping("/findUser.do")
 	public String showAll(Model model) {
-		List<User> userList = userDao.findAll();
+		@SuppressWarnings("unchecked")
+		List<User> userList = (List<User>) userService.findAll();
 		model.addAttribute(userList);
 		return "user/userInfo";
 	}
@@ -32,13 +32,13 @@ public class UserController {
 		if (user != null && !"".equals(user)) {
 			//是否存在相同用户名的用户
 			String username = user.getUsername();
-			User u = userDao.findUser(username);
+			User u = userService.findUser(username);
 			if (u == null) {
 				//加入MD5加密存储
 				
-				userDao.insertUser(user);
+				userService.insertUser(user);
 				User user2 = new User();
-				userDao.insertUser(user2);
+				userService.insertUser(user2);
 			} else {
 				model.addAttribute("msg", "该用户已存在！");
 				return "user/addUser";
@@ -49,7 +49,7 @@ public class UserController {
 	
 	@RequestMapping("/login.do")
 	public String login(Model model, User user) {
-		User newUser = userDao.selectUser(user);
+		User newUser = userService.selectUser(user);
 		System.out.println("!!");
 		/*if (newUser == null) {
 			String msg = "您输入的用户名或者密码不正确!";

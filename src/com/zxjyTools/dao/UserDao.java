@@ -14,9 +14,11 @@ public interface UserDao {
 	 */
 	List<User> findAll();
 	
-	void insertUser(User user);
+	Integer insertUser(User user);
 	
 	User selectUser(User user);
 	
 	User findUser(String username);
+
+	User selectUserById(Integer id);
 }

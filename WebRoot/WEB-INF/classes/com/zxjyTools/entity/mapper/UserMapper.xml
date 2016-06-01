@@ -9,15 +9,18 @@
 		select * from t_user
 	</select>
 	
-	<insert id="insertUser" parameterType="com.zxjyTools.entity.User">
+	<insert id="insertUser" parameterType="com.zxjyTools.entity.User" 
+		useGeneratedKeys="true" keyProperty="userId">
 		insert into t_user (
 			USERNAME,
 			PASSWORD,
-			FLAG
+			FLAG,
+			IP
 		) values (
 			#{username},
 			#{password},
-			#{flag}
+			#{flag},
+			#{IP}
 		)
 	</insert>
 	
@@ -34,4 +37,7 @@
 		where username = #{username} and password=#{password} and flag=1
 	</select>
 	
+	<select id="selectUserById" parameterType="Integer" resultType="com.zxjyTools.entity.User">
+		select * from t_user where ID = #{id}
+	</select>
 </mapper>

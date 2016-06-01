@@ -12,6 +12,8 @@ public class User implements Serializable{
 	private String password;
 	//存在状态
 	private int flag;
+	//对应的IP地址
+	private String IP;
 
 	//---------------------------------------------------------------------//
 	public String getUsername() {
@@ -44,6 +46,14 @@ public class User implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getIP() {
+		return IP;
+	}
+
+	public void setIP(String iP) {
+		IP = iP;
 	}
 	
 	

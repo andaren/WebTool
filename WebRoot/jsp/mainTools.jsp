@@ -33,5 +33,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div style="margin-left: 20%;margin-top: 5%"><a href="<%= basePath%>jsp/tool/changed.jsp"><img src="${base }image/changeSql.png" title="SQL替换"></a></div>
   	<div><a href="<%= basePath%>interface/allCategory.do">接口类型管理</a></div>
  	<div><a href="<%= basePath%>interface/allInterface.do">接口管理</a></div>
+ 	<div><a href="<%= basePath%>jsp/tool/teacherAtt.jsp">老师考勤测试数据导入</a></div>
   </body>
 </html>

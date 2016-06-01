@@ -23,7 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript">
 
 	function addInterface() {
-		window.open('${base }interface/addInfos.do?t='+new Date().getTime(),'添加接口页面', 'height=600, width=900, top=400, left=100, toolbar=no, menubar=no, scrollbars=no, resizable=yes, location=no, status=no');
+		window.open('${base }interface/addInfos.do?t='+new Date().getTime(),'添加接口页面', 'height=600, width=900, top=300, left=200, toolbar=no, menubar=no, scrollbars=no, resizable=yes, location=no, status=no');
 	}
 
 	function deleteInterface(interfaceId) {
@@ -41,6 +41,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		xmlHttp.open("POST", "${base }interface/delete.do?interfaceId="+interfaceId+"&t="+new Date().getTime(), true);
 		xmlHttp.send();
 	}
+	
+	function testInterface(interfaceId) {
+		window.open('${base }interface/testInterface.do?interfaceId='+interfaceId+'&t='+new Date().getTime(),'测试接口页面', 'height=300, width=500, top=300, left=400, toolbar=no, menubar=no, scrollbars=no, resizable=yes, location=no, status=no');
+	}
+	
 	function addChild2(categoryId) {
 		var xmlHttp;
 		if (window.XMLHttpRequest) {
@@ -106,7 +111,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						${inter.submitter}
 					</td>
 					<td>
-						<input type="button" value="删除" onclick="deleteInterface(${inter.interfaceId});"/>
+						<div><input type="button" value="删除" onclick="deleteInterface(${inter.interfaceId});"/></div>
+						<div><input type="button" value="测试连接" onclick="testInterface(${inter.interfaceId});"/></div>
 					</td>
 				</tr>
 			</c:forEach>

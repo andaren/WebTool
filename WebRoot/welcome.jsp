@@ -23,7 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <script type="text/javascript">
 	window.onload = function() {
-		setTimeout("login();", 3000);
+		setTimeout("login();", 10);
 	};
 	
 	function login() {
